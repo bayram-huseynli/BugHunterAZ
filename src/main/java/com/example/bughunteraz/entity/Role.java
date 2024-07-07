@@ -4,28 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.logging.Level;
-
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "roles")
 @Builder
-public class User {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String password;
-
-    String email;
-
-    String role;
-
-    String twoFactorSecret;
-
+    String name;
 }
