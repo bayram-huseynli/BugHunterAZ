@@ -3,7 +3,7 @@ package com.example.bughunteraz.controller;
 import com.example.bughunteraz.dto.request.AuthenticationRequest;
 import com.example.bughunteraz.dto.response.AuthenticationResponse;
 import com.example.bughunteraz.jwt.JwtUtil;
-import com.example.bughunteraz.service.UserDetailsServiceImpl;
+import com.example.bughunteraz.service.CustomUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,20 +12,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/authenticate")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsServiceImpl userDetailsService;
 
     private final JwtUtil jwtUtil;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
+            throws Exception {
 
         try {
             authenticationManager.authenticate(

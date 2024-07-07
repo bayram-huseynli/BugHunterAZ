@@ -27,12 +27,12 @@ public class SwaggerConfig {
                 .addSecurityItem(new SecurityRequirement()
                         .addList("Authorization"))
                 .info(new Info()
-                        .title("documentation by Aytac")
+                        .title("documentation by Mrrufat")
                         .version("0.0.1")
                         .description("for security")
                         .contact(new Contact()
-                                .email("aytacmammmadli@gmail.com")
-                                .name("Aytac Mammadli"))
+                                .email("ruafyseyidov@gmail.com")
+                                .name("Mirrufat Seyidov"))
                 );
     }
 }

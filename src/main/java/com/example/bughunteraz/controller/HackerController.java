@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/hackers")
-public class HackerRegistrationController {
+@RequestMapping("/hacker")
+public class HackerController {
 
     private final UserService userService;
 

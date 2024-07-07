@@ -1,6 +1,6 @@
 package com.example.bughunteraz.jwt;
 
-import com.example.bughunteraz.service.UserDetailsServiceImpl;
+import com.example.bughunteraz.service.CustomUserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsServiceImpl userDetailsService;
 
     private final JwtUtil jwtUtil;
 

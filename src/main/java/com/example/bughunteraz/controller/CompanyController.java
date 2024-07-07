@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/company")
-public class CompanyRegistrationController {
+public class CompanyController {
 
     private final UserService userService;
 
