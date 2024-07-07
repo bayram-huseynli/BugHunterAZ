@@ -16,9 +16,9 @@ public class CompanyRequest {
 
     String email;
 
-    String role;
-
     String companyName;
 
     String contactInfo;
+
+    String twoFactorSecret;
 }

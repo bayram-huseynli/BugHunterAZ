@@ -15,9 +15,9 @@ public class HackerRequest {
 
     String email;
 
-    String role;
-
     String name;
 
     String portfolio;
+
+    String twoFactorSecret;
 }

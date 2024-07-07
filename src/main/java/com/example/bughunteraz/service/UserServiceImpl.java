@@ -2,11 +2,14 @@ package com.example.bughunteraz.service;
 
 import com.example.bughunteraz.dto.request.CompanyRequest;
 import com.example.bughunteraz.dto.request.HackerRequest;
+import com.example.bughunteraz.entity.Role;
 import com.example.bughunteraz.entity.User;
+import com.example.bughunteraz.repository.RoleRepository;
 import com.example.bughunteraz.repository.UserRepository;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,16 +20,28 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final EmailService emailService;
 
+    private final ModelMapper modelMapper;
+
     private final GoogleAuthenticator gAuth = new GoogleAuthenticator();
 
     @Override
-    public User registerHacker(HackerRequest hacker) {
+    public User registerHacker(HackerRequest hackerDTO) {
+        User hacker = modelMapper.map(hackerDTO, User.class);
         hacker.setPassword(passwordEncoder.encode(hacker.getPassword()));
-        hacker.setRole("ROLE_HACKER");
+
+        Role hackerRole = roleRepository.findByName("ROLE_HACKER");
+        if (hackerRole == null) {
+            hackerRole = new Role();
+            hackerRole.setName("ROLE_HACKER");
+            roleRepository.save(hackerRole);
+        }
+        hacker.setRole(hackerRole);
 
         GoogleAuthenticatorKey key = gAuth.createCredentials();
         hacker.setTwoFactorSecret(key.getKey());
@@ -40,9 +55,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerCompany(CompanyRequest company) {
+    public User registerCompany(CompanyRequest companyDTO) {
+        User company = modelMapper.map(companyDTO, User.class);
         company.setPassword(passwordEncoder.encode(company.getPassword()));
-        company.setRole("ROLE_COMPANY");
+
+        Role companyRole = roleRepository.findByName("ROLE_COMPANY");
+        if (companyRole == null) {
+            companyRole = new Role();
+            companyRole.setName("ROLE_COMPANY");
+            roleRepository.save(companyRole);
+        }
+        company.setRole(companyRole);
 
         GoogleAuthenticatorKey key = gAuth.createCredentials();
         company.setTwoFactorSecret(key.getKey());
