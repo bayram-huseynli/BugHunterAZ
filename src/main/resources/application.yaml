@@ -1,0 +1,19 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:9495/BUGHUNTERDB?createDatabaseIfNotExist=true
+    username: root
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+    show-sql: false
+    open-in-view: false
+
