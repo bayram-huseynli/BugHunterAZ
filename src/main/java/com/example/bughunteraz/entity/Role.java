@@ -18,5 +18,9 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(nullable = false, unique = true)
     String name;
+
+    @OneToOne(mappedBy = "role")
+    private User user;
 }

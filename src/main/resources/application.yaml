@@ -1,19 +1,37 @@
+
 server:
   port: 8081
 
 spring:
+  main:
+    allow-circular-references: true
   datasource:
-    url: jdbc:mysql://localhost:9495/BUGHUNTERDB?createDatabaseIfNotExist=true
-    username: root
-    password: password
-
+    url: jdbc:postgresql://localhost:5432/BugHunterAz
+    username: postgres
+    password: 2004
+    driver-class-name: org.postgresql.Driver
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-    generate-ddl: true
-    show-sql: false
-    open-in-view: false
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
 
+
+  mail:
+    host: smtp.example.com
+    port: 587
+    username: ruafyseyidov@gmail.com
+    password: ausb enca syiw biyi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jwt:
+  secret: your_secret_key
+  expirationMs: 3600000

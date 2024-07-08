@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setup 2FA</title>
+</head>
+<body>
+<h1>Setup Two-Factor Authentication</h1>
+<form action="/2fa-setup" method="post">
+    <label for="secretKey">Secret Key:</label>
+    <input type="text" id="secretKey" name="secretKey" value="${secretKey}" readonly><br>
+    <label for="verificationCode">Verification Code:</label>
+    <input type="text" id="verificationCode" name="verificationCode"><br>
+    <input type="submit" value="Setup 2FA">
+</form>
+</body>
+</html>
