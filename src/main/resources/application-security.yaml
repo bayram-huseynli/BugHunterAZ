@@ -1,0 +1,5 @@
+security:
+  jwt:
+    token:
+      secret-key: ${APP_SECRET_KEY:VGhpcyBteSBzZWNyZXQga2V5IGZvciBBcHBsaWNhdGlvbi4gUGxlYXNlIGNoYW5nZSBpbiBwcm9kdWN0aW9uLg==}
+      expire_length: 3600000

@@ -1,11 +1,11 @@
 package com.example.bughunteraz.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
+@AllArgsConstructor
 public class AuthenticationResponse {
 
-    private final String jwt;
-
+    private String jwt;
 }

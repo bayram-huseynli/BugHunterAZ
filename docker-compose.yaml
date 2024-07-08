@@ -1,11 +1,11 @@
 version: '3.3'
 services:
-  ANADEARMAS:
+  BugHunter:
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
-      - '1009:3306'
+      - '1010:3306'
     volumes:
       - my-db:/var/lib/mysql
   adminer:
