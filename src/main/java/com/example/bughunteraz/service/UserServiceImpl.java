@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private final ModelMapper modelMapper;
 
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
 
+    @Override
     @Transactional
     public UserResponse registerHacker(HackerDto hackerDto) {
         if (userRepository.existsByEmail(hackerDto.getEmail())) {
@@ -46,6 +48,7 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user, UserResponse.class);
     }
 
+    @Override
     @Transactional
     public UserResponse registerCompany(CompanyDto companyDto) {
         if (userRepository.existsByEmail(companyDto.getEmail())) {

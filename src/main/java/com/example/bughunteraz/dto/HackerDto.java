@@ -2,6 +2,7 @@ package com.example.bughunteraz.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,16 +17,17 @@ import lombok.experimental.FieldDefaults;
 public class HackerDto {
 
     @Column(unique = true, nullable = false)
+    @NotBlank
     String name;
 
     @Email
-    @Column(nullable = false, unique = true)
+    @NotBlank
     String email;
 
     @Size(min = 6, max = 12)
-    @Column(nullable = false, unique = true)
+    @NotBlank
     String password;
 
-    @Column(nullable = false)
+    @NotBlank
     String portfolio;
 }

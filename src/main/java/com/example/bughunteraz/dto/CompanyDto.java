@@ -13,11 +13,11 @@ import lombok.experimental.FieldDefaults;
 @Data
 public class CompanyDto {
 
-    @Column(unique = true, nullable = false)
+    @NotBlank
     String companyName;
 
     @Email
-    @Column(unique = true, nullable = false)
+    @NotBlank
     String email;
 
     @NotBlank
