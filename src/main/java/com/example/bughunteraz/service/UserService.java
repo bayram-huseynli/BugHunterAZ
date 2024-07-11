@@ -1,16 +1,15 @@
 package com.example.bughunteraz.service;
 
-import com.example.bughunteraz.dto.request.CompanyRequest;
-import com.example.bughunteraz.dto.request.HackerRequest;
-import com.example.bughunteraz.entity.User;
+import com.example.bughunteraz.dto.CompanyDto;
+import com.example.bughunteraz.dto.HackerDto;
+import com.example.bughunteraz.dto.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
 
-    User registerHacker(HackerRequest hacker);
+    UserResponse registerHacker(HackerDto hackerDto);
 
-    User registerCompany(CompanyRequest company);
+    UserResponse registerCompany(CompanyDto companyDto);
 
-    User findByEmail(String email);
 }

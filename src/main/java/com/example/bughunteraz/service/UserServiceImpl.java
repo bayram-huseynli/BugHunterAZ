@@ -1,16 +1,18 @@
 package com.example.bughunteraz.service;
 
-import com.example.bughunteraz.dto.request.CompanyRequest;
-import com.example.bughunteraz.dto.request.HackerRequest;
+import com.example.bughunteraz.dto.CompanyDto;
+import com.example.bughunteraz.dto.HackerDto;
+import com.example.bughunteraz.dto.response.UserResponse;
 import com.example.bughunteraz.entity.Role;
 import com.example.bughunteraz.entity.User;
-import com.example.bughunteraz.repository.RoleRepository;
+import com.example.bughunteraz.exception.CustomException;
+import com.example.bughunteraz.jwt.JwtTokenProvider;
 import com.example.bughunteraz.repository.UserRepository;
-import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
+import com.example.bughunteraz.service.email.EmailService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,66 +22,47 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
-
     private final PasswordEncoder passwordEncoder;
-
-    private final EmailService emailService;
 
     private final ModelMapper modelMapper;
 
-    private final GoogleAuthenticator gAuth = new GoogleAuthenticator();
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private final EmailService emailService;
 
     @Override
-    public User registerHacker(HackerRequest hackerDTO) {
-        User hacker = modelMapper.map(hackerDTO, User.class);
-        hacker.setPassword(passwordEncoder.encode(hacker.getPassword()));
-
-        Role hackerRole = roleRepository.findByName("ROLE_HACKER");
-        if (hackerRole == null) {
-            hackerRole = new Role();
-            hackerRole.setName("ROLE_HACKER");
-            roleRepository.save(hackerRole);
+    @Transactional
+    public UserResponse registerHacker(HackerDto hackerDto) {
+        if (userRepository.existsByEmail(hackerDto.getEmail())) {
+            throw new CustomException("Email already in use");
         }
-        hacker.setRole(hackerRole);
 
-        GoogleAuthenticatorKey key = gAuth.createCredentials();
-        hacker.setTwoFactorSecret(key.getKey());
+        User user = modelMapper.map(hackerDto, User.class);
+        user.setRole(Role.HACKER);
+        user.setPassword(passwordEncoder.encode(hackerDto.getPassword()));
+        user = userRepository.save(user);
 
-        User registeredHacker = userRepository.save(hacker);
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+        emailService.sendRegistrationEmail(user.getEmail(), token);
 
-        emailService.sendSimpleMessage(hacker.getEmail(), "Registration Confirmation",
-                "You have successfully registered as a hacker. Your 2FA secret is: " + key.getKey());
-
-        return registeredHacker;
+        return modelMapper.map(user, UserResponse.class);
     }
 
     @Override
-    public User registerCompany(CompanyRequest companyDTO) {
-        User company = modelMapper.map(companyDTO, User.class);
-        company.setPassword(passwordEncoder.encode(company.getPassword()));
-
-        Role companyRole = roleRepository.findByName("ROLE_COMPANY");
-        if (companyRole == null) {
-            companyRole = new Role();
-            companyRole.setName("ROLE_COMPANY");
-            roleRepository.save(companyRole);
+    @Transactional
+    public UserResponse registerCompany(CompanyDto companyDto) {
+        if (userRepository.existsByEmail(companyDto.getEmail())) {
+            throw new CustomException("Email already in use");
         }
-        company.setRole(companyRole);
 
-        GoogleAuthenticatorKey key = gAuth.createCredentials();
-        company.setTwoFactorSecret(key.getKey());
+        User user = modelMapper.map(companyDto, User.class);
+        user.setRole(Role.COMPANY);
+        user.setPassword(passwordEncoder.encode(companyDto.getPassword()));
+        user = userRepository.save(user);
 
-        User registeredCompany = userRepository.save(company);
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+        emailService.sendRegistrationEmail(user.getEmail(), token);
 
-        emailService.sendSimpleMessage(company.getEmail(), "Registration Confirmation",
-                "You have successfully registered as a company. Your 2FA secret is: " + key.getKey());
-
-        return registeredCompany;
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return modelMapper.map(user, UserResponse.class);
     }
 }

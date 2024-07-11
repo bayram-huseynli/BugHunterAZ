@@ -3,6 +3,7 @@ server:
   port: 8081
 
 spring:
+
   main:
     allow-circular-references: true
   datasource:
@@ -11,6 +12,7 @@ spring:
     password: 2004
     driver-class-name: org.postgresql.Driver
   jpa:
+    open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
@@ -35,3 +37,10 @@ spring:
 jwt:
   secret: your_secret_key
   expirationMs: 3600000
+
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+    include:
+      - db
+      - security
+      - mail

@@ -1,10 +1,10 @@
 package com.example.bughunteraz.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.logging.Level;
 
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -13,22 +13,21 @@ import java.util.logging.Level;
 @Getter
 @Setter
 @Table(name = "users")
-@Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-     String username;
-     String password;
-     String email;
-     String role;
+    @Size(min = 6, max = 12)
+    @Column(nullable = false)
+    String password;
 
-    // For Hackers
-     String portfolio;
+    @Email
+    @Column(nullable = false, unique = true)
+    String email;
 
-    // For Companies
-     String companyName;
-     String contactInfo;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    Role role;
 }
