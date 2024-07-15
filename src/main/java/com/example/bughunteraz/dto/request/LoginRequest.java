@@ -24,5 +24,11 @@ public class LoginRequest {
     @Size(min = 6, max = 12)
     String password;
 
+    @NotEmpty
+    int code;
+
+    @NotEmpty
+    String secret;
+
     Role role;
 }

@@ -23,7 +23,5 @@ public class CompanyDto {
     @NotBlank
     String contactInfo;
 
-    @Size(min = 6, max = 12)
-    @NotBlank
     String password;
 }

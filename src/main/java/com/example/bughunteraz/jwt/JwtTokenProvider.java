@@ -1,7 +1,6 @@
 package com.example.bughunteraz.jwt;
 
 import com.example.bughunteraz.entity.Role;
-import com.example.bughunteraz.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,10 +22,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${security.jwt.token.expire-length:3600000}")
+    @Value("${security.jwt.token.expire-length:8640000}")
     private long validityInMilliseconds;
 
-    @Value("${security.jwt.token.secret-key:SSdtIHRoZSBncmVhdGVzdCBvbmUuIE5vIG9uZSBkZWZlYXQgbWUuLi4=}")
+    @Value("${security.jwt.token.secret-key:NTNv7j0TuYARvmNMmWXo6fKvM4o6nv/aUi9ryX38ZH+L1bkrnD1ObOQ8JAUmHCBq7Iy7otZcyAagBLHVKvvYaIpmMuxmARQ97jUVG16Jkpkp1wXOPsrF9zwew6TpczyHkHgX5EuLg2MeBuiT/qJACs1J0apruOOJCg/gOtkjB4c=}")
     private String secretKey;
 
     private SecretKey key;
@@ -65,7 +64,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // Add this method
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
@@ -84,6 +82,7 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            System.err.println("JWT validation failed: " + e.getMessage());
             throw new RuntimeException("Expired or invalid JWT token");
         }
     }

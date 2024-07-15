@@ -24,8 +24,6 @@ public class HackerDto {
     @NotBlank
     String email;
 
-    @Size(min = 6, max = 12)
-    @NotBlank
     String password;
 
     @NotBlank

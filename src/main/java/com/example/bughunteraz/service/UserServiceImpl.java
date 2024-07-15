@@ -9,10 +9,11 @@ import com.example.bughunteraz.exception.CustomException;
 import com.example.bughunteraz.jwt.JwtTokenProvider;
 import com.example.bughunteraz.repository.UserRepository;
 import com.example.bughunteraz.service.email.EmailService;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
+import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +38,13 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("Email already in use");
         }
 
+        GoogleAuthenticator gAuth = new GoogleAuthenticator();
+        final GoogleAuthenticatorKey key = gAuth.createCredentials();
+
         User user = modelMapper.map(hackerDto, User.class);
         user.setRole(Role.HACKER);
         user.setPassword(passwordEncoder.encode(hackerDto.getPassword()));
+        user.setSecret(key.getKey());
         user = userRepository.save(user);
 
         String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
@@ -55,9 +60,13 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("Email already in use");
         }
 
+        GoogleAuthenticator gAuth = new GoogleAuthenticator();
+        final GoogleAuthenticatorKey key = gAuth.createCredentials();
+
         User user = modelMapper.map(companyDto, User.class);
         user.setRole(Role.COMPANY);
         user.setPassword(passwordEncoder.encode(companyDto.getPassword()));
+        user.setSecret(key.getKey());
         user = userRepository.save(user);
 
         String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
