@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +18,10 @@ public class UserResponse {
     String email;
 
     Role role;
+
+    String secret;
+
+    int code;
+
+    String qrCodeUrl;
 }

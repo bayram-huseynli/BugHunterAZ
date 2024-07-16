@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CompanyDto {
+public class CompanyDto implements UserDto {
 
     @NotBlank
     String companyName;

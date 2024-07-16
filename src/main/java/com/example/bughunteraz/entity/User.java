@@ -21,6 +21,8 @@ public class User {
 
     String email;
 
+    int code;
+
     String secret;
 
     @Enumerated(EnumType.STRING)

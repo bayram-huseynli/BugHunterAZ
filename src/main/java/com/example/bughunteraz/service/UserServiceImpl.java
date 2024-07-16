@@ -1,7 +1,6 @@
 package com.example.bughunteraz.service;
 
-import com.example.bughunteraz.dto.CompanyDto;
-import com.example.bughunteraz.dto.HackerDto;
+import com.example.bughunteraz.dto.UserDto;
 import com.example.bughunteraz.dto.response.UserResponse;
 import com.example.bughunteraz.entity.Role;
 import com.example.bughunteraz.entity.User;
@@ -9,7 +8,6 @@ import com.example.bughunteraz.exception.CustomException;
 import com.example.bughunteraz.jwt.JwtTokenProvider;
 import com.example.bughunteraz.repository.UserRepository;
 import com.example.bughunteraz.service.email.EmailService;
-import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,47 +29,36 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
 
-    @Override
-    @Transactional
-    public UserResponse registerHacker(HackerDto hackerDto) {
-        if (userRepository.existsByEmail(hackerDto.getEmail())) {
-            throw new CustomException("Email already in use");
-        }
-
-        GoogleAuthenticator gAuth = new GoogleAuthenticator();
-        final GoogleAuthenticatorKey key = gAuth.createCredentials();
-
-        User user = modelMapper.map(hackerDto, User.class);
-        user.setRole(Role.HACKER);
-        user.setPassword(passwordEncoder.encode(hackerDto.getPassword()));
-        user.setSecret(key.getKey());
-        user = userRepository.save(user);
-
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
-        emailService.sendRegistrationEmail(user.getEmail(), token);
-
-        return modelMapper.map(user, UserResponse.class);
-    }
+    private final TwoFactorAuthService twoFactorAuthService;
 
     @Override
     @Transactional
-    public UserResponse registerCompany(CompanyDto companyDto) {
-        if (userRepository.existsByEmail(companyDto.getEmail())) {
+    public UserResponse registerUser(UserDto userDto, Role role) {
+
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
+
+        if (userRepository.existsByEmail(email)) {
             throw new CustomException("Email already in use");
         }
 
-        GoogleAuthenticator gAuth = new GoogleAuthenticator();
-        final GoogleAuthenticatorKey key = gAuth.createCredentials();
+        final GoogleAuthenticatorKey key = twoFactorAuthService.generateSecretKey();
 
-        User user = modelMapper.map(companyDto, User.class);
-        user.setRole(Role.COMPANY);
-        user.setPassword(passwordEncoder.encode(companyDto.getPassword()));
+        User user = modelMapper.map(userDto, User.class);
+        user.setRole(role);
+        user.setPassword(passwordEncoder.encode(password));
         user.setSecret(key.getKey());
         user = userRepository.save(user);
 
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
-        emailService.sendRegistrationEmail(user.getEmail(), token);
+        int code = twoFactorAuthService.getCurrentCode(key.getKey());
 
-        return modelMapper.map(user, UserResponse.class);
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+        String qrCodeUrl = twoFactorAuthService.generateQRCodeURL(user.getEmail(), key);
+        emailService.sendRegistrationEmail(user.getEmail(), token, qrCodeUrl, code);
+
+        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
+        userResponse.setQrCodeUrl(qrCodeUrl);
+        return userResponse;
     }
 }
+

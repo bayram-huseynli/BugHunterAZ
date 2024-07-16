@@ -12,7 +12,11 @@ import lombok.experimental.FieldDefaults;
 @Data
 public class LoginResponse {
 
-    private String email;
+    String email;
 
-    private String token;
+    String token;
+
+    String secret;
+
+    int code;
 }

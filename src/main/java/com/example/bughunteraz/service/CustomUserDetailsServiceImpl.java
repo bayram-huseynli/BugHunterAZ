@@ -20,14 +20,12 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name())));
     }
 
-    public boolean verifyCode(String secret, int code) {
-        GoogleAuthenticator gAuth = new GoogleAuthenticator();
-        return gAuth.authorize(secret, code);
-    }
 }
