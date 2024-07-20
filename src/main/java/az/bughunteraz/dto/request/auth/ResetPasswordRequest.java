@@ -1,6 +1,5 @@
-package az.bughunteraz.dto.response;
+package az.bughunteraz.dto.request.auth;
 
-import az.bughunteraz.entity.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +10,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserResponse {
+public class ResetPasswordRequest {
 
-    Long id;
+    String token; // Şifre sıfırlama bağlantısından gelen token
+    String newPassword;
+    String confirmNewPassword; // Şifre doğrulama
 
-    String email;
-
-    Role role;
-
-    int code;
-
-    String qrCodeUrl;
 }

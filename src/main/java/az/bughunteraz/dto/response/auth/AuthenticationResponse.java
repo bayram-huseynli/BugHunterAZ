@@ -1,4 +1,4 @@
-package az.bughunteraz.dto.response;
+package az.bughunteraz.dto.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

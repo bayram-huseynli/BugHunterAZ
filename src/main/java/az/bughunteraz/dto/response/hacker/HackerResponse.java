@@ -1,8 +1,5 @@
-package az.bughunteraz.dto;
+package az.bughunteraz.dto.response.hacker;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,18 +10,15 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class HackerDto implements UserDto {
+public class HackerResponse {
 
-    @Column(unique = true, nullable = false)
-    @NotBlank
+    Long id;
+
     String name;
 
-    @Email
-    @NotBlank
     String email;
 
     String password;
 
-    @NotBlank
     String portfolio;
 }

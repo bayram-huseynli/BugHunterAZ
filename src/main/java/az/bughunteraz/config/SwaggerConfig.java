@@ -33,7 +33,7 @@ public class SwaggerConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")))
                 .info(new Info()
-                        .title("Documentation by Mrrufat")
+                        .title("Documentation by Mrrufat and Bayram")
                         .version("0.0.1")
                         .description("For security")
                         .contact(new Contact()

@@ -1,10 +1,10 @@
-package az.bughunteraz.controller;
+package az.bughunteraz.controller.auth;
 
 import az.bughunteraz.entity.Role;
-import az.bughunteraz.dto.CompanyDto;
-import az.bughunteraz.dto.HackerDto;
+import az.bughunteraz.dto.request.company.CompanyRequest;
+import az.bughunteraz.dto.request.hacker.HackerRequest;
 import az.bughunteraz.dto.response.UserResponse;
-import az.bughunteraz.service.UserService;
+import az.bughunteraz.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +22,12 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping("/hacker")
-    public ResponseEntity<UserResponse> registerHacker(@Validated @RequestBody HackerDto hackerDto) {
+    public ResponseEntity<UserResponse> registerHacker(@Validated @RequestBody HackerRequest hackerDto) {
         return new ResponseEntity<>(userService.registerUser(hackerDto, Role.HACKER), HttpStatus.CREATED);
     }
 
     @PostMapping("/company")
-    public ResponseEntity<UserResponse> registerCompany(@Validated @RequestBody CompanyDto companyDto) {
+    public ResponseEntity<UserResponse> registerCompany(@Validated @RequestBody CompanyRequest companyDto) {
         return new ResponseEntity<>(userService.registerUser(companyDto, Role.COMPANY), HttpStatus.CREATED);
     }
 }

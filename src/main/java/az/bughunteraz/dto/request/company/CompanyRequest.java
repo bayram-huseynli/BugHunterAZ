@@ -1,5 +1,6 @@
-package az.bughunteraz.dto;
+package az.bughunteraz.dto.request.company;
 
+import az.bughunteraz.dto.UserDto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -9,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CompanyDto implements UserDto {
+public class CompanyRequest implements UserDto {
 
     @NotBlank
     String companyName;
@@ -22,4 +23,6 @@ public class CompanyDto implements UserDto {
     String contactInfo;
 
     String password;
+
+    String confirmPassword;
 }

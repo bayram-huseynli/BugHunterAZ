@@ -1,4 +1,4 @@
-package az.bughunteraz.service;
+package az.bughunteraz.service.user;
 
 import az.bughunteraz.entity.User;
 import az.bughunteraz.repository.UserRepository;

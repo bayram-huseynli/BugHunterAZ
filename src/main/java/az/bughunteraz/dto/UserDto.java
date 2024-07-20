@@ -5,4 +5,6 @@ public interface UserDto {
     String getEmail();
 
     String getPassword();
+
+    String getConfirmPassword();
 }

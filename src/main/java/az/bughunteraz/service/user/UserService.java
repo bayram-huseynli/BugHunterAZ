@@ -1,4 +1,4 @@
-package az.bughunteraz.service;
+package az.bughunteraz.service.user;
 
 import az.bughunteraz.dto.UserDto;
 import az.bughunteraz.dto.response.UserResponse;
@@ -10,5 +10,5 @@ public interface UserService {
 
     UserResponse registerUser(UserDto userDto, Role role);
 
-
+    void delete(Long id, String rawPassword);
 }

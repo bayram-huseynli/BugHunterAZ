@@ -1,6 +1,5 @@
-package az.bughunteraz.dto.response;
+package az.bughunteraz.dto.request.hacker;
 
-import az.bughunteraz.entity.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +10,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserResponse {
+public class HackerUpdateRequest {
 
-    Long id;
+    String name;
 
-    String email;
+    String password;
 
-    Role role;
+    String confirmPassword;
 
-    int code;
-
-    String qrCodeUrl;
+    String portfolio;
 }

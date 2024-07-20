@@ -17,13 +17,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    String name;
+
     String password;
 
     String email;
 
     int code;
 
-    String secret;
+    String resetToken;
 
     @Enumerated(EnumType.STRING)
     Role role;

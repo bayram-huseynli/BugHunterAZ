@@ -1,8 +1,8 @@
 package az.bughunteraz.config;
 
-import az.bughunteraz.jwt.JwtTokenProvider;
-import az.bughunteraz.service.CustomUserDetailsServiceImpl;
 import az.bughunteraz.jwt.JwtTokenFilter;
+import az.bughunteraz.jwt.JwtTokenProvider;
+import az.bughunteraz.service.user.CustomUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +42,10 @@ public class SecurityConfig {
                                 "/login/**",
                                 "/register/**",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/api/hacker/**",
+                                "/api/company/**",
+                                "/password/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -67,7 +70,7 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.addAllowedOrigin("http://localhost:8585"); // Buraya izin verilen origin'leri ekleyin
+        config.addAllowedOrigin("http://localhost:8585");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

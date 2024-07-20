@@ -1,6 +1,5 @@
-package az.bughunteraz.dto.response;
+package az.bughunteraz.dto.request.company;
 
-import az.bughunteraz.entity.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +10,14 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserResponse {
+public class CompanyUpdateRequest {
 
-    Long id;
+    String companyName;
 
-    String email;
+    String contactInfo;
 
-    Role role;
+    String password;
 
-    int code;
+    String confirmPassword;
 
-    String qrCodeUrl;
 }

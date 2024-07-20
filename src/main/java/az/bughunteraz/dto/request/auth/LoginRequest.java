@@ -1,4 +1,4 @@
-package az.bughunteraz.dto.request;
+package az.bughunteraz.dto.request.auth;
 
 import az.bughunteraz.entity.Role;
 import jakarta.validation.constraints.Email;
@@ -26,9 +26,6 @@ public class LoginRequest {
 
     @NotEmpty
     int code;
-
-    @NotEmpty
-    String secret;
 
     Role role;
 }
